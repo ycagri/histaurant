@@ -12,3 +12,14 @@ jobs:
     - uses: subosito/flutter-action@v2
     - name: Run Unit Tests
       run: flutter test
+    - name: set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Build Android Release
+      run: flutter build appbundle
+      env: 
+        STORE_PASSWORD: ${{ secrets.PLAY_STORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.PLAY_STORE_ALIAS }}
+    - name: Build IOS Release
+      run: flutter build ipa
