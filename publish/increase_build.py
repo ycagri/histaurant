@@ -15,7 +15,6 @@ def increase_build_number(path_to_pubspec, version_name):
 
     r = re.compile(r'version: (\d+).(\d+).(\d+)\+(\d+)')
     m = r.findall(pubspec)
-    print(m)
     code = int(m[0][3]) + 1
     with open(path_to_pubspec, 'wt') as f:
         f.write(r.sub('version: %s' %
