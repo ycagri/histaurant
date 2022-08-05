@@ -23,13 +23,13 @@ jobs:
       run: npx ci
     - name: Install semantic-release extra plugins
       uses: cycjimmy/semantic-release-action@v2
-        id: semantic
-        with:
-          semantic_version: 19.0.2
-          extra_plugins: |
-            @semantic-release/changelog
-            @semantic-release/git
-            @semantic-release/exec
+      id: semantic
+      with:
+        semantic_version: 19.0.2
+        extra_plugins: |
+          @semantic-release/changelog
+          @semantic-release/git
+          @semantic-release/exec
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build Android Release
