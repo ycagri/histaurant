@@ -42,6 +42,8 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
     - name: Build IOS Release
       run: flutter build ios --release
+    - name: Publish to Apple Store Connect
+      run: xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey ${{ secrets.APP_STORE_CONNECT_API_KEY }} --apiIssuer ${{ secrets.APP_STORE_CONNECT_API_ISSUER }}
     - name: Clean up keychain and provisioning profile
       if: ${{ always() }}
       run: |
