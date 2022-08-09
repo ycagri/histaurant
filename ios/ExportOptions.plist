@@ -1,0 +1,15 @@
+<plist version="1.0">
+<dict>
+  <key>method</key>
+  <string>app-store</string>
+  <key>teamID</key>
+  <string>8X2PH25PK2</string>
+	<key>signingStyle</key>
+	<string>manual</string>
+  <key>provisioningProfiles</key>
+	<dict>
+		<key>com.ycagri.histaurant</key>
+		<string>117d4cbd-b5d8-472f-ad11-5002a2f25bf9</string>
+	</dict>
+</dict>
+</plist>
