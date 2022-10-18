@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:historical_restaurants/bloc/map_cubit.dart';
@@ -7,11 +8,14 @@ import 'package:historical_restaurants/injection.dart';
 import 'package:historical_restaurants/list_page.dart';
 import 'package:historical_restaurants/settings_page.dart';
 
-import 'bloc/list_cubit.dart';
+import 'firebase_options.dart';
 import 'map_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await configureDependencies();
   runApp(const MyApp());
 }
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Histaurant',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -92,7 +96,7 @@ class MainPageState extends State<MainPage> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => getIt<MapCubit>()),
-          BlocProvider(create: (context) => getIt<ListCubit>()),
+          BlocProvider(create: (context) => getIt<MapCubit>()),
           BlocProvider(
               create: (context) =>
                   getIt<SettingsBloc>()..add(SettingsLoadingEvent())),

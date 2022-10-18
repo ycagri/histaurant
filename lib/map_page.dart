@@ -13,26 +13,30 @@ class MapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
-        if (state is MapRestaurantsLoadedState) {
+        if (state is MapPositionLoadedState) {
           return GoogleMap(
             mapType: MapType.normal,
-            initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
-            onMapCreated: (map) {
-              context.read<MapCubit>().setMapController(map);
-            },
-            markers: state.restaurants
-                .map((e) => Marker(
-                    markerId: MarkerId(e.id),
-                    position: LatLng(e.lat, e.lon),
-                    infoWindow: InfoWindow(
-                        title: e.toString(),
-                        onTap: () => _onMarkerTap(context, e))))
-                .toSet(),
+            initialCameraPosition: state.position,
             compassEnabled: true,
             myLocationEnabled: true,
           );
         }
-        context.read<MapCubit>().getRestaurants();
+        else if (state is MapRestaurantsLoadedState) {
+          return GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: state.position,
+              markers: state.restaurants
+                  .map((e) =>
+                  Marker(
+                      markerId: MarkerId(e.id),
+                      position: LatLng(e.lat, e.lon),
+                      infoWindow: InfoWindow(
+                          title: e.toString(),
+                          onTap: () => _onMarkerTap(context, e))))
+                  .toSet(),
+              compassEnabled: true,
+              myLocationEnabled: true);
+        }
         return const Text("");
       },
     );
@@ -48,12 +52,12 @@ void _onMarkerTap(BuildContext context, Restaurant element) {
         return DraggableScrollableSheet(
             initialChildSize: 0.4,
             builder: (BuildContext context,
-                    ScrollController scrollController) =>
+                ScrollController scrollController) =>
                 Container(
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20))),
+                        BorderRadius.vertical(top: Radius.circular(20))),
                     child: SingleChildScrollView(
                         controller: scrollController,
                         child: Column(
@@ -63,14 +67,16 @@ void _onMarkerTap(BuildContext context, Restaurant element) {
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
                                   element.toString(),
-                                  style: Theme.of(buildContext)
+                                  style: Theme
+                                      .of(buildContext)
                                       .textTheme
                                       .titleLarge,
                                 )),
                             Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(element.desc,
-                                    style: Theme.of(buildContext)
+                                    style: Theme
+                                        .of(buildContext)
                                         .textTheme
                                         .bodyLarge
                                         ?.copyWith(height: 2.0)))

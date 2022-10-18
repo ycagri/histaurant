@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:historical_restaurants/bloc/map_cubit.dart';
 import 'package:historical_restaurants/database/restaurant.dart';
-import 'package:historical_restaurants/state/list_state.dart';
-
-import 'bloc/list_cubit.dart';
+import 'package:historical_restaurants/state/map_state.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListCubit, ListState>(builder: (context, state) {
-      if (state is ListLoadedState) {
+    return BlocBuilder<MapCubit, MapState>(builder: (context, state) {
+      if (state is MapRestaurantsLoadedState) {
         return Scaffold(
             body: Column(children: [
           Padding(
@@ -71,13 +70,13 @@ class ListPage extends StatelessWidget {
                       subtitle: Text(restaurant.city,
                           style: Theme.of(context).textTheme.bodySmall),
                       trailing: Text(
-                          "${restaurant.distance.toStringAsFixed(1)} km",
+                          "${10} km",
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
                               ?.copyWith(
                                   color: _getTrailingTextColor(
-                                      restaurant.distance))),
+                                      10))),
                       contentPadding: const EdgeInsets.all(4.0),
                       onTap: () => _showRestaurantInfo(
                           context, state.restaurants[index]),

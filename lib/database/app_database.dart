@@ -27,7 +27,7 @@ class ApplicationDatabase {
   }
 
   Future<List<Restaurant>> getRestaurants(
-      Set<String> cityFilters, SortOptions option, String searchTerm) async {
+      Set<String> cityFilters, SortOptions option) async {
     List<Restaurant> restaurants = <Restaurant>[];
     List<Map<String, dynamic>> result;
     String orderBy = _getSortColumn(option);

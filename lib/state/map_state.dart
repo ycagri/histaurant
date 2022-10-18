@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../database/restaurant.dart';
 
@@ -9,11 +10,23 @@ class MapState extends Equatable {
 
 class MapLoadingState extends MapState {}
 
-class MapRestaurantsLoadedState extends MapState {
-  final List<Restaurant> restaurants;
+class MapPositionLoadedState extends MapState {
+  final CameraPosition position;
 
-  MapRestaurantsLoadedState(this.restaurants);
+  MapPositionLoadedState(this.position);
 
   @override
-  List<Object> get props => [restaurants];
+  List<Object> get props => [position];
+}
+
+class MapRestaurantsLoadedState extends MapState {
+
+  final CameraPosition position;
+
+  final List<Restaurant> restaurants;
+
+  MapRestaurantsLoadedState(this.position, this.restaurants);
+
+  @override
+  List<Object> get props => [position, restaurants];
 }
