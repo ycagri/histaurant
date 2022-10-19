@@ -11,34 +11,44 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(
+    GoogleMapController? mapController;
+    return BlocConsumer<MapCubit, MapState>(
       builder: (context, state) {
-        if (state is MapPositionLoadedState) {
-          return GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: state.position,
-            compassEnabled: true,
-            myLocationEnabled: true,
-          );
-        }
-        else if (state is MapRestaurantsLoadedState) {
+        if (state is MapRestaurantsLoadedState) {
           return GoogleMap(
               mapType: MapType.normal,
-              initialCameraPosition: state.position,
+              initialCameraPosition:
+                  const CameraPosition(target: LatLng(0.0, 0.0)),
               markers: state.restaurants
-                  .map((e) =>
-                  Marker(
+                  .map((e) => Marker(
                       markerId: MarkerId(e.id),
                       position: LatLng(e.lat, e.lon),
                       infoWindow: InfoWindow(
                           title: e.toString(),
                           onTap: () => _onMarkerTap(context, e))))
                   .toSet(),
+              onMapCreated: (controller) => mapController = controller,
               compassEnabled: true,
               myLocationEnabled: true);
         }
-        return const Text("");
+        return GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: const CameraPosition(target: LatLng(0.0, 0.0)),
+          compassEnabled: true,
+          myLocationEnabled: true,
+          onMapCreated: (controller) => mapController = controller,
+        );
       },
+      listener: (context, state) {
+        if (state is MapPositionLoadedState) {
+          mapController
+              ?.animateCamera(CameraUpdate.newCameraPosition(state.position));
+        }
+      },
+      buildWhen: (oldState, currentState) =>
+          currentState is MapRestaurantsLoadedState,
+      listenWhen: (oldState, currentState) =>
+          currentState is MapPositionLoadedState,
     );
   }
 }
@@ -52,12 +62,12 @@ void _onMarkerTap(BuildContext context, Restaurant element) {
         return DraggableScrollableSheet(
             initialChildSize: 0.4,
             builder: (BuildContext context,
-                ScrollController scrollController) =>
+                    ScrollController scrollController) =>
                 Container(
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20))),
+                            BorderRadius.vertical(top: Radius.circular(20))),
                     child: SingleChildScrollView(
                         controller: scrollController,
                         child: Column(
@@ -67,16 +77,14 @@ void _onMarkerTap(BuildContext context, Restaurant element) {
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
                                   element.toString(),
-                                  style: Theme
-                                      .of(buildContext)
+                                  style: Theme.of(buildContext)
                                       .textTheme
                                       .titleLarge,
                                 )),
                             Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(element.desc,
-                                    style: Theme
-                                        .of(buildContext)
+                                    style: Theme.of(buildContext)
                                         .textTheme
                                         .bodyLarge
                                         ?.copyWith(height: 2.0)))

@@ -79,9 +79,9 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-            MapPositionLoadedState(cameraPosition),
-            MapRestaurantsLoadedState(cameraPosition, localRestaurants),
-            MapRestaurantsLoadedState(cameraPosition, remoteRestaurants)
+            MapRestaurantsLoadedState(localRestaurants),
+            MapRestaurantsLoadedState(remoteRestaurants),
+            MapPositionLoadedState(cameraPosition)
           ],
       verify: (_) =>
           {applicationDatabase.insertRestaurants(remoteRestaurants)});
@@ -103,9 +103,9 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-        MapPositionLoadedState(defaultCameraPosition),
-        MapRestaurantsLoadedState(defaultCameraPosition, localRestaurants),
-        MapRestaurantsLoadedState(defaultCameraPosition, remoteRestaurants)
+        MapRestaurantsLoadedState(localRestaurants),
+        MapRestaurantsLoadedState(remoteRestaurants),
+        MapPositionLoadedState(defaultCameraPosition)
       ],
       verify: (_) =>
       {applicationDatabase.insertRestaurants(remoteRestaurants)});
@@ -127,8 +127,8 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-        MapPositionLoadedState(cameraPosition),
-        MapRestaurantsLoadedState(cameraPosition, localRestaurants)
+        MapRestaurantsLoadedState(localRestaurants),
+        MapPositionLoadedState(cameraPosition)
       ],
       verify: (_) =>
       {applicationDatabase.insertRestaurants(remoteRestaurants)});
@@ -150,8 +150,8 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-        MapPositionLoadedState(cameraPosition),
-        MapRestaurantsLoadedState(cameraPosition, remoteRestaurants)
+        MapRestaurantsLoadedState(remoteRestaurants),
+        MapPositionLoadedState(cameraPosition)
       ],
       verify: (_) =>
       {applicationDatabase.insertRestaurants(remoteRestaurants)});

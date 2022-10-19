@@ -21,12 +21,10 @@ class MapPositionLoadedState extends MapState {
 
 class MapRestaurantsLoadedState extends MapState {
 
-  final CameraPosition position;
-
   final List<Restaurant> restaurants;
 
-  MapRestaurantsLoadedState(this.position, this.restaurants);
+  MapRestaurantsLoadedState(this.restaurants);
 
   @override
-  List<Object> get props => [position, restaurants];
+  List<Object> get props => [restaurants];
 }
