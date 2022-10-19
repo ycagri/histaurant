@@ -26,6 +26,13 @@ class MapCubit extends Cubit<MapState> {
     _getRestaurants();
   }
 
+  void navigateToRestaurant(Restaurant restaurant) {
+    emit(MapNavigateRestaurantState(
+        restaurant.id,
+        CameraPosition(
+            target: LatLng(restaurant.lat, restaurant.lon), zoom: 10)));
+  }
+
   void _getRestaurants() {
     _database
         .getRestaurants(_wrapper.getCityFilters(), _wrapper.getSortSelection())
@@ -61,8 +68,7 @@ class MapCubit extends Cubit<MapState> {
 
   CameraPosition _createCameraPosition(Position? currentPosition) {
     var lat = currentPosition == null ? 39.925533 : currentPosition.latitude;
-    var lon =
-    currentPosition == null ? 32.866287 : currentPosition.longitude;
+    var lon = currentPosition == null ? 32.866287 : currentPosition.longitude;
     var zoom = currentPosition == null ? 4.0 : 14.0;
     return CameraPosition(target: LatLng(lat, lon), zoom: zoom);
   }

@@ -2,11 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:historical_restaurants/bloc/map_cubit.dart';
-import 'package:historical_restaurants/bloc/settings_bloc.dart';
-import 'package:historical_restaurants/event/settings_page_event.dart';
 import 'package:historical_restaurants/injection.dart';
 import 'package:historical_restaurants/list_page.dart';
-import 'package:historical_restaurants/settings_page.dart';
 
 import 'firebase_options.dart';
 import 'map_page.dart';
@@ -79,12 +76,6 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const MapPage(),
-    const ListPage(),
-    const SettingsPage()
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -96,10 +87,7 @@ class MainPageState extends State<MainPage> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => getIt<MapCubit>()),
-          BlocProvider(create: (context) => getIt<MapCubit>()),
-          BlocProvider(
-              create: (context) =>
-                  getIt<SettingsBloc>()..add(SettingsLoadingEvent())),
+          BlocProvider(create: (context) => getIt<MapCubit>())
         ],
         child: Scaffold(
             appBar: AppBar(
@@ -107,7 +95,10 @@ class MainPageState extends State<MainPage> {
             ),
             body: IndexedStack(
               index: _selectedIndex,
-              children: _widgetOptions,
+              children: <Widget>[
+                const MapPage(),
+                ListPage(_onItemTapped)
+              ],
             ),
             bottomNavigationBar: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[
@@ -118,9 +109,7 @@ class MainPageState extends State<MainPage> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.list),
                   label: 'List',
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), label: "Settings")
+                )
               ],
               currentIndex: _selectedIndex,
               selectedItemColor: const Color(0xffe4005f),

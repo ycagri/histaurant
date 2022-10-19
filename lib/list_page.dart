@@ -5,11 +5,14 @@ import 'package:historical_restaurants/database/restaurant.dart';
 import 'package:historical_restaurants/state/map_state.dart';
 
 class ListPage extends StatelessWidget {
-  const ListPage({Key? key}) : super(key: key);
+  const ListPage(this.changePage, {Key? key}) : super(key: key);
+
+  final void Function(int index) changePage;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(builder: (context, state) {
+    return BlocConsumer<MapCubit, MapState>(
+        builder: (context, state) {
       if (state is MapRestaurantsLoadedState) {
         return Scaffold(
             body: Column(children: [
@@ -69,14 +72,12 @@ class ListPage extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleSmall),
                       subtitle: Text(restaurant.city,
                           style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Text(
-                          "${10} km",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(
-                                  color: _getTrailingTextColor(
-                                      10))),
+                      trailing: IconButton(icon: Icon(Icons.location_on,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed:() {
+                        changePage(0);
+                        BlocProvider.of<MapCubit>(context).navigateToRestaurant(restaurant);
+                      },),
                       contentPadding: const EdgeInsets.all(4.0),
                       onTap: () => _showRestaurantInfo(
                           context, state.restaurants[index]),
@@ -87,14 +88,13 @@ class ListPage extends StatelessWidget {
                   shrinkWrap: true))
         ]));
       }
-      return const Text("");
-    });
-  }
+      return const Text("Error");
+    },
+      listener: (context, state) {
 
-  Color _getTrailingTextColor(double distance) {
-    var red = distance > 500 ? 255 : (255.0 * (distance / 500.0)).toInt();
-    var green = distance > 500 ? 0 : (255.0 * (1.0 - distance / 500.0)).toInt();
-    return Color.fromARGB(255, red, green, 0);
+      },
+      buildWhen: (oldState, currentState) => currentState is MapRestaurantsLoadedState,
+    );
   }
 
   void _showRestaurantInfo(BuildContext context, Restaurant r) {

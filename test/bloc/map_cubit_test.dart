@@ -58,7 +58,8 @@ void main() {
   var restApi = MockRestApi();
 
   var cameraPosition = const CameraPosition(target: LatLng(0.0, 0.0), zoom: 14);
-  var defaultCameraPosition = const CameraPosition(target: LatLng(39.925533, 32.866287), zoom: 4);
+  var defaultCameraPosition =
+      const CameraPosition(target: LatLng(39.925533, 32.866287), zoom: 4);
   var localRestaurants = _generateTestRestaurantList(5);
   var remoteRestaurants = _generateTestRestaurantList(10);
 
@@ -92,7 +93,7 @@ void main() {
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.error("Error"));
         when(applicationDatabase.getRestaurants(
-            filters, SortOptions.alphabeticallyAscending))
+                filters, SortOptions.alphabeticallyAscending))
             .thenAnswer((_) => Future.value(localRestaurants));
         when(restApi.getRestaurants())
             .thenAnswer((_) => Future.value(remoteRestaurants));
@@ -103,12 +104,12 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-        MapRestaurantsLoadedState(localRestaurants),
-        MapRestaurantsLoadedState(remoteRestaurants),
-        MapPositionLoadedState(defaultCameraPosition)
-      ],
+            MapRestaurantsLoadedState(localRestaurants),
+            MapRestaurantsLoadedState(remoteRestaurants),
+            MapPositionLoadedState(defaultCameraPosition)
+          ],
       verify: (_) =>
-      {applicationDatabase.insertRestaurants(remoteRestaurants)});
+          {applicationDatabase.insertRestaurants(remoteRestaurants)});
 
   blocTest("mapCubitGetRemoteRestaurantsFailTest",
       build: () {
@@ -116,10 +117,9 @@ void main() {
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.value(_createMockPosition()));
         when(applicationDatabase.getRestaurants(
-            filters, SortOptions.alphabeticallyAscending))
+                filters, SortOptions.alphabeticallyAscending))
             .thenAnswer((_) => Future.value(localRestaurants));
-        when(restApi.getRestaurants())
-            .thenAnswer((_) => Future.error("Error"));
+        when(restApi.getRestaurants()).thenAnswer((_) => Future.error("Error"));
         when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
         when(preferenceWrapper.getSortSelection())
             .thenAnswer((_) => SortOptions.alphabeticallyAscending);
@@ -127,11 +127,11 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-        MapRestaurantsLoadedState(localRestaurants),
-        MapPositionLoadedState(cameraPosition)
-      ],
+            MapRestaurantsLoadedState(localRestaurants),
+            MapPositionLoadedState(cameraPosition)
+          ],
       verify: (_) =>
-      {applicationDatabase.insertRestaurants(remoteRestaurants)});
+          {applicationDatabase.insertRestaurants(remoteRestaurants)});
 
   blocTest("mapCubitGetLocalRestaurantsTest",
       build: () {
@@ -139,7 +139,7 @@ void main() {
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.value(_createMockPosition()));
         when(applicationDatabase.getRestaurants(
-            filters, SortOptions.alphabeticallyAscending))
+                filters, SortOptions.alphabeticallyAscending))
             .thenAnswer((_) => Future.error("Error"));
         when(restApi.getRestaurants())
             .thenAnswer((_) => Future.value(remoteRestaurants));
@@ -150,9 +150,49 @@ void main() {
             applicationDatabase, preferenceWrapper, locationHelper, restApi);
       },
       expect: () => [
-        MapRestaurantsLoadedState(remoteRestaurants),
-        MapPositionLoadedState(cameraPosition)
-      ],
+            MapRestaurantsLoadedState(remoteRestaurants),
+            MapPositionLoadedState(cameraPosition)
+          ],
       verify: (_) =>
-      {applicationDatabase.insertRestaurants(remoteRestaurants)});
+          {applicationDatabase.insertRestaurants(remoteRestaurants)});
+
+  blocTest("mapCubitNavigateRestaurantsTest",
+      build: () {
+        var filters = <String>{};
+        when(locationHelper.getUserLocation())
+            .thenAnswer((_) => Future.value(_createMockPosition()));
+        when(applicationDatabase.getRestaurants(
+                filters, SortOptions.alphabeticallyAscending))
+            .thenAnswer((_) => Future.value(localRestaurants));
+        when(restApi.getRestaurants())
+            .thenAnswer((_) => Future.value(remoteRestaurants));
+        when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
+        when(preferenceWrapper.getSortSelection())
+            .thenAnswer((_) => SortOptions.alphabeticallyAscending);
+        return MapCubit(
+            applicationDatabase, preferenceWrapper, locationHelper, restApi);
+      },
+      act: (MapCubit cubit) => cubit.navigateToRestaurant(const Restaurant(
+          id: "test_id",
+          name: "Test Restaurant",
+          desc: "Description",
+          lat: 0.0,
+          lon: 0.0,
+          year: 2022,
+          address: "Address",
+          district: "District",
+          city: "City",
+          country: "Country",
+          tel: "0000000",
+          rating: 5.0,
+          logo: "logo")),
+      expect: () => [
+            MapNavigateRestaurantState("test_id",
+                const CameraPosition(target: LatLng(0.0, 0.0), zoom: 10)),
+            MapRestaurantsLoadedState(localRestaurants),
+            MapRestaurantsLoadedState(remoteRestaurants),
+            MapPositionLoadedState(cameraPosition)
+          ],
+      verify: (_) =>
+          {applicationDatabase.insertRestaurants(remoteRestaurants)});
 }

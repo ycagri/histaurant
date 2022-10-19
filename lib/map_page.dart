@@ -43,12 +43,17 @@ class MapPage extends StatelessWidget {
         if (state is MapPositionLoadedState) {
           mapController
               ?.animateCamera(CameraUpdate.newCameraPosition(state.position));
+        } else if (state is MapNavigateRestaurantState) {
+          mapController
+              ?.animateCamera(CameraUpdate.newCameraPosition(state.position));
+          mapController?.showMarkerInfoWindow(MarkerId(state.id));
         }
       },
       buildWhen: (oldState, currentState) =>
           currentState is MapRestaurantsLoadedState,
       listenWhen: (oldState, currentState) =>
-          currentState is MapPositionLoadedState,
+          currentState is MapPositionLoadedState ||
+          currentState is MapNavigateRestaurantState,
     );
   }
 }

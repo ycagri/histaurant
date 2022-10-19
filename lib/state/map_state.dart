@@ -28,3 +28,14 @@ class MapRestaurantsLoadedState extends MapState {
   @override
   List<Object> get props => [restaurants];
 }
+
+class MapNavigateRestaurantState extends MapState {
+  final String id;
+
+  final CameraPosition position;
+
+  MapNavigateRestaurantState(this.id, this.position);
+
+  @override
+  List<Object> get props => [id, position];
+}
