@@ -6,7 +6,6 @@ import 'package:historical_restaurants/api/rest_api.dart';
 import 'package:historical_restaurants/bloc/map_cubit.dart';
 import 'package:historical_restaurants/database/app_database.dart';
 import 'package:historical_restaurants/database/restaurant.dart';
-import 'package:historical_restaurants/preference_wrapper.dart';
 import 'package:historical_restaurants/state/map_state.dart';
 import 'package:historical_restaurants/utils/LocationHelper.dart';
 import 'package:mockito/annotations.dart';
@@ -16,7 +15,6 @@ import 'map_cubit_test.mocks.dart';
 
 @GenerateMocks([], customMocks: [
   MockSpec<ApplicationDatabase>(onMissingStub: OnMissingStub.returnDefault),
-  MockSpec<PreferenceWrapper>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<LocationHelper>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<RestApi>(onMissingStub: OnMissingStub.returnDefault),
 ])
@@ -54,7 +52,6 @@ void main() {
 
   var applicationDatabase = MockApplicationDatabase();
   var locationHelper = MockLocationHelper();
-  var preferenceWrapper = MockPreferenceWrapper();
   var restApi = MockRestApi();
 
   var cameraPosition = const CameraPosition(target: LatLng(0.0, 0.0), zoom: 14);
@@ -65,19 +62,14 @@ void main() {
 
   blocTest("mapCubitGetPositionTest",
       build: () {
-        var filters = <String>{};
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.value(_createMockPosition()));
-        when(applicationDatabase.getRestaurants(
-                filters, SortOptions.alphabeticallyAscending))
+        when(applicationDatabase.getRestaurants())
             .thenAnswer((_) => Future.value(localRestaurants));
         when(restApi.getRestaurants())
             .thenAnswer((_) => Future.value(remoteRestaurants));
-        when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
-        when(preferenceWrapper.getSortSelection())
-            .thenAnswer((_) => SortOptions.alphabeticallyAscending);
         return MapCubit(
-            applicationDatabase, preferenceWrapper, locationHelper, restApi);
+            applicationDatabase, locationHelper, restApi);
       },
       expect: () => [
             MapRestaurantsLoadedState(localRestaurants),
@@ -89,19 +81,14 @@ void main() {
 
   blocTest("mapCubitGetPositionFailTest",
       build: () {
-        var filters = <String>{};
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.error("Error"));
-        when(applicationDatabase.getRestaurants(
-                filters, SortOptions.alphabeticallyAscending))
+        when(applicationDatabase.getRestaurants())
             .thenAnswer((_) => Future.value(localRestaurants));
         when(restApi.getRestaurants())
             .thenAnswer((_) => Future.value(remoteRestaurants));
-        when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
-        when(preferenceWrapper.getSortSelection())
-            .thenAnswer((_) => SortOptions.alphabeticallyAscending);
         return MapCubit(
-            applicationDatabase, preferenceWrapper, locationHelper, restApi);
+            applicationDatabase, locationHelper, restApi);
       },
       expect: () => [
             MapRestaurantsLoadedState(localRestaurants),
@@ -113,18 +100,13 @@ void main() {
 
   blocTest("mapCubitGetRemoteRestaurantsFailTest",
       build: () {
-        var filters = <String>{};
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.value(_createMockPosition()));
-        when(applicationDatabase.getRestaurants(
-                filters, SortOptions.alphabeticallyAscending))
+        when(applicationDatabase.getRestaurants())
             .thenAnswer((_) => Future.value(localRestaurants));
         when(restApi.getRestaurants()).thenAnswer((_) => Future.error("Error"));
-        when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
-        when(preferenceWrapper.getSortSelection())
-            .thenAnswer((_) => SortOptions.alphabeticallyAscending);
         return MapCubit(
-            applicationDatabase, preferenceWrapper, locationHelper, restApi);
+            applicationDatabase, locationHelper, restApi);
       },
       expect: () => [
             MapRestaurantsLoadedState(localRestaurants),
@@ -135,19 +117,14 @@ void main() {
 
   blocTest("mapCubitGetLocalRestaurantsTest",
       build: () {
-        var filters = <String>{};
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.value(_createMockPosition()));
-        when(applicationDatabase.getRestaurants(
-                filters, SortOptions.alphabeticallyAscending))
+        when(applicationDatabase.getRestaurants())
             .thenAnswer((_) => Future.error("Error"));
         when(restApi.getRestaurants())
             .thenAnswer((_) => Future.value(remoteRestaurants));
-        when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
-        when(preferenceWrapper.getSortSelection())
-            .thenAnswer((_) => SortOptions.alphabeticallyAscending);
         return MapCubit(
-            applicationDatabase, preferenceWrapper, locationHelper, restApi);
+            applicationDatabase, locationHelper, restApi);
       },
       expect: () => [
             MapRestaurantsLoadedState(remoteRestaurants),
@@ -158,19 +135,14 @@ void main() {
 
   blocTest("mapCubitNavigateRestaurantsTest",
       build: () {
-        var filters = <String>{};
         when(locationHelper.getUserLocation())
             .thenAnswer((_) => Future.value(_createMockPosition()));
-        when(applicationDatabase.getRestaurants(
-                filters, SortOptions.alphabeticallyAscending))
+        when(applicationDatabase.getRestaurants())
             .thenAnswer((_) => Future.value(localRestaurants));
         when(restApi.getRestaurants())
             .thenAnswer((_) => Future.value(remoteRestaurants));
-        when(preferenceWrapper.getCityFilters()).thenAnswer((_) => filters);
-        when(preferenceWrapper.getSortSelection())
-            .thenAnswer((_) => SortOptions.alphabeticallyAscending);
         return MapCubit(
-            applicationDatabase, preferenceWrapper, locationHelper, restApi);
+            applicationDatabase, locationHelper, restApi);
       },
       act: (MapCubit cubit) => cubit.navigateToRestaurant(const Restaurant(
           id: "test_id",

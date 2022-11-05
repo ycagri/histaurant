@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 
 import '../api/rest_api.dart';
 import '../database/app_database.dart';
-import '../preference_wrapper.dart';
 import '../utils/LocationHelper.dart';
 
 @injectable
@@ -15,13 +14,11 @@ import '../utils/LocationHelper.dart';
 class MapCubit extends Cubit<MapState> {
   final ApplicationDatabase _database;
 
-  final PreferenceWrapper _wrapper;
-
   final LocationHelper _locationHelper;
 
   final RestApi _restApi;
 
-  MapCubit(this._database, this._wrapper, this._locationHelper, this._restApi)
+  MapCubit(this._database, this._locationHelper, this._restApi)
       : super(MapLoadingState()) {
     _getRestaurants();
   }
@@ -35,7 +32,7 @@ class MapCubit extends Cubit<MapState> {
 
   void _getRestaurants() {
     _database
-        .getRestaurants(_wrapper.getCityFilters(), _wrapper.getSortSelection())
+        .getRestaurants()
         .then((value) {
       emit(MapRestaurantsLoadedState(value));
       _getRestaurantsFromRemote();

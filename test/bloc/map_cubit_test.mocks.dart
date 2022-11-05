@@ -3,16 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-import 'dart:ui' as _i8;
+import 'dart:async' as _i4;
 
-import 'package:cloud_firestore/cloud_firestore.dart' as _i3;
 import 'package:geolocator/geolocator.dart' as _i2;
-import 'package:historical_restaurants/api/rest_api.dart' as _i10;
-import 'package:historical_restaurants/database/app_database.dart' as _i4;
-import 'package:historical_restaurants/database/restaurant.dart' as _i6;
-import 'package:historical_restaurants/preference_wrapper.dart' as _i7;
-import 'package:historical_restaurants/utils/LocationHelper.dart' as _i9;
+import 'package:historical_restaurants/api/rest_api.dart' as _i7;
+import 'package:historical_restaurants/database/app_database.dart' as _i3;
+import 'package:historical_restaurants/database/restaurant.dart' as _i5;
+import 'package:historical_restaurants/utils/LocationHelper.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -31,132 +28,55 @@ class _FakePosition_0 extends _i1.SmartFake implements _i2.Position {
       : super(parent, parentInvocation);
 }
 
-class _FakeSnapshotMetadata_1 extends _i1.SmartFake
-    implements _i3.SnapshotMetadata {
-  _FakeSnapshotMetadata_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
 /// A class which mocks [ApplicationDatabase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockApplicationDatabase extends _i1.Mock
-    implements _i4.ApplicationDatabase {
+    implements _i3.ApplicationDatabase {
   @override
-  _i5.Future<void> insertRestaurants(List<_i6.Restaurant>? restaurants) =>
+  _i4.Future<void> insertRestaurants(List<_i5.Restaurant>? restaurants) =>
       (super.noSuchMethod(Invocation.method(#insertRestaurants, [restaurants]),
-              returnValue: _i5.Future<void>.value(),
-              returnValueForMissingStub: _i5.Future<void>.value())
-          as _i5.Future<void>);
+              returnValue: _i4.Future<void>.value(),
+              returnValueForMissingStub: _i4.Future<void>.value())
+          as _i4.Future<void>);
   @override
-  _i5.Future<List<_i6.Restaurant>> getRestaurants(
-          Set<String>? cityFilters, _i7.SortOptions? option) =>
-      (super.noSuchMethod(
-              Invocation.method(#getRestaurants, [cityFilters, option]),
-              returnValue:
-                  _i5.Future<List<_i6.Restaurant>>.value(<_i6.Restaurant>[]))
-          as _i5.Future<List<_i6.Restaurant>>);
+  _i4.Future<List<_i5.Restaurant>> getRestaurants() => (super.noSuchMethod(
+      Invocation.method(#getRestaurants, []),
+      returnValue: _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[]),
+      returnValueForMissingStub:
+          _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[])) as _i4
+      .Future<List<_i5.Restaurant>>);
   @override
-  _i5.Future<List<String>> getCities() =>
-      (super.noSuchMethod(Invocation.method(#getCities, []),
-              returnValue: _i5.Future<List<String>>.value(<String>[]))
-          as _i5.Future<List<String>>);
-}
-
-/// A class which mocks [PreferenceWrapper].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockPreferenceWrapper extends _i1.Mock implements _i7.PreferenceWrapper {
-  @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
-  @override
-  void setSortSelection(_i7.SortOptions? option) =>
-      super.noSuchMethod(Invocation.method(#setSortSelection, [option]),
-          returnValueForMissingStub: null);
-  @override
-  _i7.SortOptions getSortSelection() => (super.noSuchMethod(
-      Invocation.method(#getSortSelection, []),
-      returnValue: _i7.SortOptions.alphabeticallyAscending) as _i7.SortOptions);
-  @override
-  void addCityFilter(String? city) =>
-      super.noSuchMethod(Invocation.method(#addCityFilter, [city]),
-          returnValueForMissingStub: null);
-  @override
-  void removeCityFilter(String? city) =>
-      super.noSuchMethod(Invocation.method(#removeCityFilter, [city]),
-          returnValueForMissingStub: null);
-  @override
-  Set<String> getCityFilters() =>
-      (super.noSuchMethod(Invocation.method(#getCityFilters, []),
-          returnValue: <String>{}) as Set<String>);
-  @override
-  void addListener(_i8.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#addListener, [listener]),
-          returnValueForMissingStub: null);
-  @override
-  void removeListener(_i8.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
-          returnValueForMissingStub: null);
-  @override
-  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
-      returnValueForMissingStub: null);
-  @override
-  void notifyListeners() =>
-      super.noSuchMethod(Invocation.method(#notifyListeners, []),
-          returnValueForMissingStub: null);
+  _i4.Future<List<String>> getCities() => (super.noSuchMethod(
+          Invocation.method(#getCities, []),
+          returnValue: _i4.Future<List<String>>.value(<String>[]),
+          returnValueForMissingStub: _i4.Future<List<String>>.value(<String>[]))
+      as _i4.Future<List<String>>);
 }
 
 /// A class which mocks [LocationHelper].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocationHelper extends _i1.Mock implements _i9.LocationHelper {
+class MockLocationHelper extends _i1.Mock implements _i6.LocationHelper {
   @override
-  _i5.Future<_i2.Position> getUserLocation() => (super.noSuchMethod(
+  _i4.Future<_i2.Position> getUserLocation() => (super.noSuchMethod(
           Invocation.method(#getUserLocation, []),
-          returnValue: _i5.Future<_i2.Position>.value(
+          returnValue: _i4.Future<_i2.Position>.value(
+              _FakePosition_0(this, Invocation.method(#getUserLocation, []))),
+          returnValueForMissingStub: _i4.Future<_i2.Position>.value(
               _FakePosition_0(this, Invocation.method(#getUserLocation, []))))
-      as _i5.Future<_i2.Position>);
+      as _i4.Future<_i2.Position>);
 }
 
 /// A class which mocks [RestApi].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRestApi extends _i1.Mock implements _i10.RestApi {
+class MockRestApi extends _i1.Mock implements _i7.RestApi {
   @override
-  _i5.Future<List<_i6.Restaurant>> getRestaurants() =>
-      (super.noSuchMethod(Invocation.method(#getRestaurants, []),
-              returnValue:
-                  _i5.Future<List<_i6.Restaurant>>.value(<_i6.Restaurant>[]))
-          as _i5.Future<List<_i6.Restaurant>>);
-}
-
-/// A class which mocks [QuerySnapshot].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockQuerySnapshot<T extends Object?> extends _i1.Mock
-    implements _i3.QuerySnapshot<T> {
-  MockQuerySnapshot() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  List<_i3.QueryDocumentSnapshot<T>> get docs =>
-      (super.noSuchMethod(Invocation.getter(#docs),
-              returnValue: <_i3.QueryDocumentSnapshot<T>>[])
-          as List<_i3.QueryDocumentSnapshot<T>>);
-  @override
-  List<_i3.DocumentChange<T>> get docChanges => (super.noSuchMethod(
-      Invocation.getter(#docChanges),
-      returnValue: <_i3.DocumentChange<T>>[]) as List<_i3.DocumentChange<T>>);
-  @override
-  _i3.SnapshotMetadata get metadata =>
-      (super.noSuchMethod(Invocation.getter(#metadata),
-              returnValue:
-                  _FakeSnapshotMetadata_1(this, Invocation.getter(#metadata)))
-          as _i3.SnapshotMetadata);
-  @override
-  int get size =>
-      (super.noSuchMethod(Invocation.getter(#size), returnValue: 0) as int);
+  _i4.Future<List<_i5.Restaurant>> getRestaurants() => (super.noSuchMethod(
+      Invocation.method(#getRestaurants, []),
+      returnValue: _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[]),
+      returnValueForMissingStub:
+          _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[])) as _i4
+      .Future<List<_i5.Restaurant>>);
 }

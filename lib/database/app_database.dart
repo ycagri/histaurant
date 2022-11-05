@@ -26,22 +26,9 @@ class ApplicationDatabase {
     await batch.commit(noResult: true);
   }
 
-  Future<List<Restaurant>> getRestaurants(
-      Set<String> cityFilters, SortOptions option) async {
+  Future<List<Restaurant>> getRestaurants() async {
     List<Restaurant> restaurants = <Restaurant>[];
-    List<Map<String, dynamic>> result;
-    String orderBy = _getSortColumn(option);
-    if (cityFilters.isNotEmpty) {
-      var params = List.filled(cityFilters.length, "?");
-      var whereClause = "city IN(${params.join(",")})";
-      result = await _database.query("tbl_restaurants",
-          where: whereClause,
-          whereArgs: cityFilters.toList(),
-          orderBy: orderBy);
-    } else {
-      result = await _database.query("tbl_restaurants", orderBy: orderBy);
-    }
-
+    List<Map<String, dynamic>> result = await _database.query("tbl_restaurants", orderBy: "name");
     for (var r in result) {
       restaurants.add(Restaurant.fromJson(r));
     }
@@ -57,36 +44,5 @@ class ApplicationDatabase {
       cities.add(r["city"].toString());
     }
     return cities;
-  }
-
-  String _getSortColumn(SortOptions sortOption) {
-    String option = "";
-    switch (sortOption) {
-      case SortOptions.alphabeticallyDescending:
-        option = "name Desc";
-        break;
-      case SortOptions.alphabeticallyAscending:
-        option = "name Asc";
-        break;
-      case SortOptions.cityDescending:
-        option = "city Desc";
-        break;
-      case SortOptions.cityAscending:
-        option = "city Asc";
-        break;
-      case SortOptions.distanceDescending:
-        option = "distance Desc";
-        break;
-      case SortOptions.distanceAscending:
-        option = "distance Asc";
-        break;
-      case SortOptions.dateAscending:
-        option = "year Asc";
-        break;
-      case SortOptions.dateDescending:
-        option = "year Desc";
-        break;
-    }
-    return option;
   }
 }
