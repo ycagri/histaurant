@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
-import 'package:historical_restaurants/database/app_database.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,17 +12,13 @@ final getIt = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: false, // default
 )
-Future<void> configureDependencies() async {
-  await $initGetIt(getIt);
+void configureDependencies() {
+  $initGetIt(getIt);
 }
 
 @module
 abstract class AppModule {
-  @preResolve
-  Future<SharedPreferences> get sharedPreferences =>
-      SharedPreferences.getInstance();
 
-  @preResolve
-  Future<ApplicationDatabase> get applicationDatabase =>
-      ApplicationDatabase.create();
+  Stream<QuerySnapshot<Map<String, dynamic>>> get restaurantStream =>
+      FirebaseFirestore.instance.collection("restaurants").snapshots();
 }

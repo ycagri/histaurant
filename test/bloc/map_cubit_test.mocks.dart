@@ -3,12 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i7;
+import 'dart:typed_data' as _i8;
 
+import 'package:cloud_firestore/cloud_firestore.dart' as _i5;
+import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
+    as _i4;
+import 'package:firebase_core/firebase_core.dart' as _i3;
 import 'package:geolocator/geolocator.dart' as _i2;
-import 'package:historical_restaurants/api/rest_api.dart' as _i7;
-import 'package:historical_restaurants/database/app_database.dart' as _i3;
-import 'package:historical_restaurants/database/restaurant.dart' as _i5;
 import 'package:historical_restaurants/utils/LocationHelper.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -28,30 +30,49 @@ class _FakePosition_0 extends _i1.SmartFake implements _i2.Position {
       : super(parent, parentInvocation);
 }
 
-/// A class which mocks [ApplicationDatabase].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockApplicationDatabase extends _i1.Mock
-    implements _i3.ApplicationDatabase {
-  @override
-  _i4.Future<void> insertRestaurants(List<_i5.Restaurant>? restaurants) =>
-      (super.noSuchMethod(Invocation.method(#insertRestaurants, [restaurants]),
-              returnValue: _i4.Future<void>.value(),
-              returnValueForMissingStub: _i4.Future<void>.value())
-          as _i4.Future<void>);
-  @override
-  _i4.Future<List<_i5.Restaurant>> getRestaurants() => (super.noSuchMethod(
-      Invocation.method(#getRestaurants, []),
-      returnValue: _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[]),
-      returnValueForMissingStub:
-          _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[])) as _i4
-      .Future<List<_i5.Restaurant>>);
-  @override
-  _i4.Future<List<String>> getCities() => (super.noSuchMethod(
-          Invocation.method(#getCities, []),
-          returnValue: _i4.Future<List<String>>.value(<String>[]),
-          returnValueForMissingStub: _i4.Future<List<String>>.value(<String>[]))
-      as _i4.Future<List<String>>);
+class _FakeFirebaseApp_1 extends _i1.SmartFake implements _i3.FirebaseApp {
+  _FakeFirebaseApp_1(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeSettings_2 extends _i1.SmartFake implements _i4.Settings {
+  _FakeSettings_2(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeCollectionReference_3<T extends Object?> extends _i1.SmartFake
+    implements _i5.CollectionReference<T> {
+  _FakeCollectionReference_3(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeWriteBatch_4 extends _i1.SmartFake implements _i5.WriteBatch {
+  _FakeWriteBatch_4(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeLoadBundleTask_5 extends _i1.SmartFake
+    implements _i5.LoadBundleTask {
+  _FakeLoadBundleTask_5(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeQuerySnapshot_6<T extends Object?> extends _i1.SmartFake
+    implements _i5.QuerySnapshot<T> {
+  _FakeQuerySnapshot_6(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeQuery_7<T extends Object?> extends _i1.SmartFake
+    implements _i5.Query<T> {
+  _FakeQuery_7(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeDocumentReference_8<T extends Object?> extends _i1.SmartFake
+    implements _i5.DocumentReference<T> {
+  _FakeDocumentReference_8(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [LocationHelper].
@@ -59,24 +80,149 @@ class MockApplicationDatabase extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockLocationHelper extends _i1.Mock implements _i6.LocationHelper {
   @override
-  _i4.Future<_i2.Position> getUserLocation() => (super.noSuchMethod(
+  _i7.Future<_i2.Position> getUserLocation() => (super.noSuchMethod(
           Invocation.method(#getUserLocation, []),
-          returnValue: _i4.Future<_i2.Position>.value(
+          returnValue: _i7.Future<_i2.Position>.value(
               _FakePosition_0(this, Invocation.method(#getUserLocation, []))),
-          returnValueForMissingStub: _i4.Future<_i2.Position>.value(
+          returnValueForMissingStub: _i7.Future<_i2.Position>.value(
               _FakePosition_0(this, Invocation.method(#getUserLocation, []))))
-      as _i4.Future<_i2.Position>);
+      as _i7.Future<_i2.Position>);
 }
 
-/// A class which mocks [RestApi].
+/// A class which mocks [FirebaseFirestore].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRestApi extends _i1.Mock implements _i7.RestApi {
+class MockFirebaseFirestore extends _i1.Mock implements _i5.FirebaseFirestore {
   @override
-  _i4.Future<List<_i5.Restaurant>> getRestaurants() => (super.noSuchMethod(
-      Invocation.method(#getRestaurants, []),
-      returnValue: _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[]),
+  _i3.FirebaseApp get app => (super.noSuchMethod(Invocation.getter(#app),
+          returnValue: _FakeFirebaseApp_1(this, Invocation.getter(#app)),
+          returnValueForMissingStub:
+              _FakeFirebaseApp_1(this, Invocation.getter(#app)))
+      as _i3.FirebaseApp);
+  @override
+  set app(_i3.FirebaseApp? _app) =>
+      super.noSuchMethod(Invocation.setter(#app, _app),
+          returnValueForMissingStub: null);
+  @override
+  set settings(_i4.Settings? settings) =>
+      super.noSuchMethod(Invocation.setter(#settings, settings),
+          returnValueForMissingStub: null);
+  @override
+  _i4.Settings get settings => (super.noSuchMethod(Invocation.getter(#settings),
+      returnValue: _FakeSettings_2(this, Invocation.getter(#settings)),
       returnValueForMissingStub:
-          _i4.Future<List<_i5.Restaurant>>.value(<_i5.Restaurant>[])) as _i4
-      .Future<List<_i5.Restaurant>>);
+          _FakeSettings_2(this, Invocation.getter(#settings))) as _i4.Settings);
+  @override
+  Map<dynamic, dynamic> get pluginConstants =>
+      (super.noSuchMethod(Invocation.getter(#pluginConstants),
+              returnValue: <dynamic, dynamic>{},
+              returnValueForMissingStub: <dynamic, dynamic>{})
+          as Map<dynamic, dynamic>);
+  @override
+  _i5.CollectionReference<Map<String, dynamic>> collection(
+          String? collectionPath) =>
+      (super.noSuchMethod(Invocation.method(#collection, [collectionPath]),
+              returnValue: _FakeCollectionReference_3<Map<String, dynamic>>(
+                  this, Invocation.method(#collection, [collectionPath])),
+              returnValueForMissingStub:
+                  _FakeCollectionReference_3<Map<String, dynamic>>(
+                      this, Invocation.method(#collection, [collectionPath])))
+          as _i5.CollectionReference<Map<String, dynamic>>);
+  @override
+  _i5.WriteBatch batch() => (super.noSuchMethod(Invocation.method(#batch, []),
+          returnValue: _FakeWriteBatch_4(this, Invocation.method(#batch, [])),
+          returnValueForMissingStub:
+              _FakeWriteBatch_4(this, Invocation.method(#batch, [])))
+      as _i5.WriteBatch);
+  @override
+  _i7.Future<void> clearPersistence() => (super.noSuchMethod(
+      Invocation.method(#clearPersistence, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Future<void> enablePersistence(
+          [_i4.PersistenceSettings? persistenceSettings]) =>
+      (super.noSuchMethod(
+              Invocation.method(#enablePersistence, [persistenceSettings]),
+              returnValue: _i7.Future<void>.value(),
+              returnValueForMissingStub: _i7.Future<void>.value())
+          as _i7.Future<void>);
+  @override
+  _i5.LoadBundleTask loadBundle(_i8.Uint8List? bundle) => (super.noSuchMethod(
+      Invocation.method(#loadBundle, [bundle]),
+      returnValue:
+          _FakeLoadBundleTask_5(this, Invocation.method(#loadBundle, [bundle])),
+      returnValueForMissingStub: _FakeLoadBundleTask_5(
+          this, Invocation.method(#loadBundle, [bundle]))) as _i5
+      .LoadBundleTask);
+  @override
+  void useFirestoreEmulator(String? host, int? port,
+          {bool? sslEnabled = false}) =>
+      super.noSuchMethod(
+          Invocation.method(
+              #useFirestoreEmulator, [host, port], {#sslEnabled: sslEnabled}),
+          returnValueForMissingStub: null);
+  @override
+  _i7.Future<_i5.QuerySnapshot<Map<String, dynamic>>> namedQueryGet(String? name,
+          {_i4.GetOptions? options = const _i4.GetOptions()}) =>
+      (super.noSuchMethod(Invocation.method(#namedQueryGet, [name], {#options: options}),
+              returnValue: _i7.Future<_i5.QuerySnapshot<Map<String, dynamic>>>.value(_FakeQuerySnapshot_6<Map<String, dynamic>>(
+                  this,
+                  Invocation.method(#namedQueryGet, [name], {#options: options}))),
+              returnValueForMissingStub:
+                  _i7.Future<_i5.QuerySnapshot<Map<String, dynamic>>>.value(
+                      _FakeQuerySnapshot_6<Map<String, dynamic>>(this, Invocation.method(#namedQueryGet, [name], {#options: options}))))
+          as _i7.Future<_i5.QuerySnapshot<Map<String, dynamic>>>);
+  @override
+  _i5.Query<Map<String, dynamic>> collectionGroup(String? collectionPath) =>
+      (super.noSuchMethod(Invocation.method(#collectionGroup, [collectionPath]),
+              returnValue: _FakeQuery_7<Map<String, dynamic>>(
+                  this, Invocation.method(#collectionGroup, [collectionPath])),
+              returnValueForMissingStub: _FakeQuery_7<Map<String, dynamic>>(
+                  this, Invocation.method(#collectionGroup, [collectionPath])))
+          as _i5.Query<Map<String, dynamic>>);
+  @override
+  _i7.Future<void> disableNetwork() => (super.noSuchMethod(
+      Invocation.method(#disableNetwork, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i5.DocumentReference<Map<String, dynamic>> doc(String? documentPath) =>
+      (super.noSuchMethod(Invocation.method(#doc, [documentPath]),
+              returnValue: _FakeDocumentReference_8<Map<String, dynamic>>(
+                  this, Invocation.method(#doc, [documentPath])),
+              returnValueForMissingStub:
+                  _FakeDocumentReference_8<Map<String, dynamic>>(
+                      this, Invocation.method(#doc, [documentPath])))
+          as _i5.DocumentReference<Map<String, dynamic>>);
+  @override
+  _i7.Future<void> enableNetwork() => (super.noSuchMethod(
+      Invocation.method(#enableNetwork, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Stream<void> snapshotsInSync() => (super.noSuchMethod(
+      Invocation.method(#snapshotsInSync, []),
+      returnValue: _i7.Stream<void>.empty(),
+      returnValueForMissingStub: _i7.Stream<void>.empty()) as _i7.Stream<void>);
+  @override
+  _i7.Future<T> runTransaction<T>(_i5.TransactionHandler<T>? transactionHandler,
+          {Duration? timeout = const Duration(seconds: 30),
+          int? maxAttempts = 5}) =>
+      (super.noSuchMethod(
+              Invocation.method(#runTransaction, [transactionHandler],
+                  {#timeout: timeout, #maxAttempts: maxAttempts}),
+              returnValue: _i7.Future<T>.value(null),
+              returnValueForMissingStub: _i7.Future<T>.value(null))
+          as _i7.Future<T>);
+  @override
+  _i7.Future<void> terminate() => (super.noSuchMethod(
+      Invocation.method(#terminate, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Future<void> waitForPendingWrites() => (super.noSuchMethod(
+      Invocation.method(#waitForPendingWrites, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
 }

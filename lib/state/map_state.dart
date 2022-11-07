@@ -39,3 +39,9 @@ class MapNavigateRestaurantState extends MapState {
   @override
   List<Object> get props => [id, position];
 }
+
+class LocationErrorState extends MapState {
+}
+
+class RequestErrorState extends MapState {
+}

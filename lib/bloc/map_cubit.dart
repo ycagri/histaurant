@@ -1,27 +1,21 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:historical_restaurants/database/restaurant.dart';
 import 'package:historical_restaurants/state/map_state.dart';
 import 'package:injectable/injectable.dart';
 
-import '../api/rest_api.dart';
-import '../database/app_database.dart';
 import '../utils/LocationHelper.dart';
 
 @injectable
 @singleton
 class MapCubit extends Cubit<MapState> {
-  final ApplicationDatabase _database;
-
   final LocationHelper _locationHelper;
 
-  final RestApi _restApi;
+  final Stream<QuerySnapshot<Map<String, dynamic>>> _restaurantStream;
 
-  MapCubit(this._database, this._locationHelper, this._restApi)
-      : super(MapLoadingState()) {
-    _getRestaurants();
-  }
+  MapCubit(this._locationHelper, this._restaurantStream) : super(MapLoadingState());
 
   void navigateToRestaurant(Restaurant restaurant) {
     emit(MapNavigateRestaurantState(
@@ -30,36 +24,29 @@ class MapCubit extends Cubit<MapState> {
             target: LatLng(restaurant.lat, restaurant.lon), zoom: 10)));
   }
 
-  void _getRestaurants() {
-    _database
-        .getRestaurants()
-        .then((value) {
-      emit(MapRestaurantsLoadedState(value));
-      _getRestaurantsFromRemote();
-    }).onError((error, stackTrace) {
-      _getRestaurantsFromRemote();
+  void getRestaurants() {
+    _restaurantStream.map((event) {
+      List<Restaurant> restaurants = <Restaurant>[];
+      for (var element in event.docs) {
+        var restaurant = Restaurant.fromJson(element.data());
+        restaurants.add(restaurant);
+      }
+      return restaurants;
+    }).listen((event) {
+      if (event.isEmpty) {
+        emit(RequestErrorState());
+      } else {
+        emit(MapRestaurantsLoadedState(event));
+      }
     });
   }
 
-  void _getRestaurantsFromRemote() {
-    _restApi.getRestaurants().then((value) {
-      _saveRestaurants(value);
-      emit(MapRestaurantsLoadedState(value));
-      _getPosition();
-    }).onError((error, stackTrace) {
-      _getPosition();
-    });
-  }
-
-  void _saveRestaurants(List<Restaurant> restaurants) {
-    _database.insertRestaurants(restaurants);
-  }
-
-  void _getPosition() async {
+  void getPosition() async {
     _locationHelper.getUserLocation().then((value) {
       emit(MapPositionLoadedState(_createCameraPosition(value)));
     }).onError((error, stackTrace) {
       emit(MapPositionLoadedState(_createCameraPosition(null)));
+      emit(LocationErrorState());
     });
   }
 
