@@ -1,44 +1,59 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:historical_restaurants/database/restaurant.dart';
-import 'package:historical_restaurants/repository/map_repository.dart';
 import 'package:historical_restaurants/state/map_state.dart';
 import 'package:injectable/injectable.dart';
 
+import '../utils/LocationHelper.dart';
+
 @injectable
+@singleton
 class MapCubit extends Cubit<MapState> {
-  final MapRepository _repository;
+  final LocationHelper _locationHelper;
 
-  late GoogleMapController _controller;
+  final Stream<QuerySnapshot<Map<String, dynamic>>> _restaurantStream;
 
-  MapCubit(this._repository) : super(MapLoadingState()) {
-    _repository.registerSettingsChangeListener(getRestaurants);
+  MapCubit(this._locationHelper, this._restaurantStream) : super(MapLoadingState());
+
+  void navigateToRestaurant(Restaurant restaurant) {
+    emit(MapNavigateRestaurantState(
+        restaurant.id,
+        CameraPosition(
+            target: LatLng(restaurant.lat, restaurant.lon), zoom: 10)));
   }
 
-  void setMapController(GoogleMapController controller) {
-    _controller = controller;
-    _getUserLocation();
+  void getRestaurants() {
+    _restaurantStream.map((event) {
+      List<Restaurant> restaurants = <Restaurant>[];
+      for (var element in event.docs) {
+        var restaurant = Restaurant.fromJson(element.data());
+        restaurants.add(restaurant);
+      }
+      return restaurants;
+    }).listen((event) {
+      if (event.isEmpty) {
+        emit(RequestErrorState());
+      } else {
+        emit(MapRestaurantsLoadedState(event));
+      }
+    });
   }
 
-  void getRestaurants() async {
-    var restaurants = await _repository.getRestaurantsFromLocal();
-    emit(MapRestaurantsLoadedState(restaurants));
+  void getPosition() async {
+    _locationHelper.getUserLocation().then((value) {
+      emit(MapPositionLoadedState(_createCameraPosition(value)));
+    }).onError((error, stackTrace) {
+      emit(MapPositionLoadedState(_createCameraPosition(null)));
+      emit(LocationErrorState());
+    });
   }
 
-  void moveToRestaurant(Restaurant r) {
-    _controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(r.lat, r.lon), zoom: 16)));
-  }
-
-  void _getUserLocation() async {
-    var pos = await _repository.getUserLocation();
-    _controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(pos.latitude, pos.longitude), zoom: 12)));
-  }
-
-  @override
-  Future<void> close() {
-    _repository.unregisterSettingsChangeListener(getRestaurants);
-    return super.close();
+  CameraPosition _createCameraPosition(Position? currentPosition) {
+    var lat = currentPosition == null ? 39.925533 : currentPosition.latitude;
+    var lon = currentPosition == null ? 32.866287 : currentPosition.longitude;
+    var zoom = currentPosition == null ? 4.0 : 14.0;
+    return CameraPosition(target: LatLng(lat, lon), zoom: zoom);
   }
 }

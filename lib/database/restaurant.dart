@@ -16,9 +16,8 @@ class Restaurant extends Equatable {
   final String city;
   final String country;
   final String tel;
-  final double rating;
+  final double? rating;
   final String? logo;
-  final double distance;
 
   const Restaurant(
       {required this.id,
@@ -33,8 +32,7 @@ class Restaurant extends Equatable {
       required this.country,
       required this.tel,
       required this.rating,
-      required this.logo,
-      required this.distance});
+      required this.logo});
 
   factory Restaurant.fromJson(Map<String, dynamic> json) =>
       _$RestaurantFromJson(json);
@@ -55,8 +53,7 @@ class Restaurant extends Equatable {
         country,
         tel,
         rating,
-        logo,
-        distance
+        logo
       ];
 
   @override
