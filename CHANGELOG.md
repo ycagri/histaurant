@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/ycagri/histaurant/compare/v1.1.0...v1.1.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* privacy.html is removed. ([542a27c](https://github.com/ycagri/histaurant/commit/542a27c9b17a391e47977b79ffb9277a0f3a9faf))
+
 # [1.1.0](https://github.com/ycagri/histaurant/compare/v1.0.1...v1.1.0) (2022-11-07)
 
 
