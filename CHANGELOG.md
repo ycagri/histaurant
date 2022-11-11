@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/ycagri/histaurant/compare/v1.1.2...v1.1.3) (2022-11-11)
+
+
+### Bug Fixes
+
+* deleted android keystore added again. ([869dd5c](https://github.com/ycagri/histaurant/commit/869dd5c2ba3e23128e864bf353fb718b850dd83d))
+
 ## [1.1.2](https://github.com/ycagri/histaurant/compare/v1.1.1...v1.1.2) (2022-11-11)
 
 
