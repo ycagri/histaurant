@@ -60,9 +60,9 @@ Future<void> main() async {
     return response;
   }
 
-  Position _createMockPosition() => Position(
-      latitude: 0.0,
-      longitude: 0.0,
+  Position _createMockPosition(double lat, double lon) => Position(
+      latitude: lat,
+      longitude: lon,
       timestamp: DateTime.now(),
       accuracy: 0.0,
       altitude: 0.0,
@@ -72,7 +72,6 @@ Future<void> main() async {
 
   var locationHelper = MockLocationHelper();
 
-  var cameraPosition = const CameraPosition(target: LatLng(0.0, 0.0), zoom: 14);
   var defaultCameraPosition =
       const CameraPosition(target: LatLng(39.925533, 32.866287), zoom: 4);
   var remoteRestaurants = _generateTestRestaurantList(10);
@@ -80,13 +79,25 @@ Future<void> main() async {
   blocTest("mapCubitGetPositionTest",
       build: () {
         when(locationHelper.getUserLocation())
-            .thenAnswer((_) => Future.value(_createMockPosition()));
+            .thenAnswer((_) => Future.value(_createMockPosition(39.0, 42.0)));
         final instance = FakeFirebaseFirestore();
         return MapCubit(locationHelper, instance.collection("restaurants").snapshots());
       },
       expect: () => [
-            MapPositionLoadedState(cameraPosition),
+            MapPositionLoadedState(const CameraPosition(target: LatLng(39.0, 42.0), zoom: 14)),
           ],
+      act: (MapCubit bloc) => bloc.getPosition());
+
+  blocTest("mapCubitGetPositionFarAwayTest",
+      build: () {
+        when(locationHelper.getUserLocation())
+            .thenAnswer((_) => Future.value(_createMockPosition(11.0, 68.0)));
+        final instance = FakeFirebaseFirestore();
+        return MapCubit(locationHelper, instance.collection("restaurants").snapshots());
+      },
+      expect: () => [
+        MapPositionLoadedState(defaultCameraPosition),
+      ],
       act: (MapCubit bloc) => bloc.getPosition());
 
   blocTest("mapCubitGetPositionFailTest",
