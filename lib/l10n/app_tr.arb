@@ -4,5 +4,6 @@
   "list": "Liste",
   "locationError": "Konumunuzu bulamadık!",
   "requestError": "Lütfen internet bağlantınızı kontrol edin!",
-  "databaseError": "Restoranları yükleyemeyirouz. Lütfen daha sonra tekrar deneyin."
+  "databaseError": "Restoranları yükleyemeyirouz. Lütfen daha sonra tekrar deneyin.",
+  "google_rating": "Google Rating"
 }

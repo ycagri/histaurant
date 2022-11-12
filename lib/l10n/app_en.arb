@@ -4,5 +4,6 @@
   "list": "List",
   "locationError": "We couldn't locate you!",
   "requestError": "Please check your internet connection!",
-  "databaseError": "We can't load restaurants now. Please try again later."
+  "databaseError": "We can't load restaurants now. Please try again later.",
+  "google_rating": "Google Rating"
 }
