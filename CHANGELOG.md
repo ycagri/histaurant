@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/ycagri/histaurant/compare/v1.1.3...v1.2.0) (2022-11-12)
+
+
+### Features
+
+* google rating is added. ([446118e](https://github.com/ycagri/histaurant/commit/446118ec91cf76c51501749275309db25d53cd36))
+* initial position is locked to a default one. ([7d79d05](https://github.com/ycagri/histaurant/commit/7d79d05db834e87fd58057e3e22f1f85b5926a40))
+* loading animation is updated. ([6114bbc](https://github.com/ycagri/histaurant/commit/6114bbce30362b32ac9fc242a597509863a9c103))
+
 ## [1.1.3](https://github.com/ycagri/histaurant/compare/v1.1.2...v1.1.3) (2022-11-11)
 
 
