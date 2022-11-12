@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:historical_restaurants/bloc/map_cubit.dart';
 import 'package:historical_restaurants/database/restaurant.dart';
+import 'package:historical_restaurants/star_rating.dart';
 import 'package:historical_restaurants/state/map_state.dart';
 
 class ListPage extends StatelessWidget {
@@ -133,6 +134,13 @@ class ListPage extends StatelessWidget {
                                         .textTheme
                                         .titleLarge,
                                   )),
+                              Padding(padding: const EdgeInsets.all(4.0),
+                                  child: Center(child: Text(
+                                      "${AppLocalizations.of(context)!.google_rating} (${r.rating ?? 0.0})",
+                                      style: Theme.of(buildContext)
+                                          .textTheme
+                                          .bodyMedium))),
+                              StarRating(starCount: 5, rating: r.rating ?? 0, color: Colors.amber),
                               Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(r.desc,
