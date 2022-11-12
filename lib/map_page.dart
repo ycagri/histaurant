@@ -38,7 +38,11 @@ class MapPage extends StatelessWidget {
         BlocProvider.of<MapCubit>(context).getRestaurants();
         return Scaffold(
             backgroundColor: Colors.white,
-            body: Center(child: Image.asset('assets/images/logo.png')));
+            body: Center(child: Stack(
+            children: [
+            Positioned(top: 25, left: 25, child: Image.asset('assets/images/logo.png', width: 150, height: 150)),
+              const SizedBox(width: 200, height: 200, child: CircularProgressIndicator()),
+            ])));
       },
       listener: (context, state) {
         if (state is MapLoadingState) {
