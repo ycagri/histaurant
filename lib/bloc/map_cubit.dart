@@ -51,9 +51,15 @@ class MapCubit extends Cubit<MapState> {
   }
 
   CameraPosition _createCameraPosition(Position? currentPosition) {
-    var lat = currentPosition == null ? 39.925533 : currentPosition.latitude;
-    var lon = currentPosition == null ? 32.866287 : currentPosition.longitude;
-    var zoom = currentPosition == null ? 4.0 : 14.0;
+    bool isDefaultLocation = _shouldUseDefaultPosition(currentPosition);
+    var lat = isDefaultLocation ? 39.925533 : currentPosition!.latitude;
+    var lon = isDefaultLocation ? 32.866287 : currentPosition!.longitude;
+    var zoom = isDefaultLocation ? 4.0 : 14.0;
     return CameraPosition(target: LatLng(lat, lon), zoom: zoom);
+  }
+
+  bool _shouldUseDefaultPosition(Position? position){
+    return position == null || position.longitude < 20 || position.longitude > 50
+        || position.latitude < 35 || position.longitude > 45;
   }
 }
